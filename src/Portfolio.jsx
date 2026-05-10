@@ -54,7 +54,7 @@ const SOCIALS = [
 ];
 
 /* ── AVATAR — replace this path with your own image URL ── */
-const AVATAR_SRC = "./src/assets/avatar.png";
+const AVATAR_SRC = "/avatar.png";
 
 /* ── STYLES ───────────────────────────────────────────── */
 const css = `
