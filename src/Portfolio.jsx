@@ -121,6 +121,77 @@ body{
 }
 .nav-cta:hover{background:var(--orange-dark);transform:scale(1.03)}
 
+/* cta-form */
+
+.contact-modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(6px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+  padding:1.25rem;
+}
+
+.contact-modal{
+  position:relative;
+  width:min(480px, 100%);
+  background:var(--bg-3);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1.5rem;
+}
+
+.contact-close{
+  position:absolute;
+  top:14px;
+  right:14px;
+  background:none;
+  border:none;
+  color:var(--muted);
+  font-size:1rem;
+  cursor:pointer;
+}
+
+.contact-title{
+  font-size:1rem;
+  font-weight:550;
+  color:#fff;
+  margin-bottom:1rem;
+}
+
+.contact-sub{
+  font-size:.85rem;
+  color:var(--sub);
+  margin-bottom:1.25rem;
+}
+
+.contact-form{
+  display:flex;
+  flex-direction:column;
+  gap:.85rem;
+}
+
+.contact-form input,
+.contact-form textarea{
+  width:100%;
+  background:rgba(0,168,168,.04);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:.85rem 1rem;
+  color:#fff;
+  font-family:'Inter',sans-serif;
+  font-size:.9rem;
+  outline:none;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus{
+  border-color:rgba(0,168,168,.35);
+}
+
 .nav-menu{
   display:none;
   background:none;
@@ -152,6 +223,22 @@ body{
   backdrop-filter:blur(18px);
   border-bottom:1px solid var(--border);
   padding:1rem 5% 1.25rem;
+}
+
+.mobile-menu-cta{
+  width:100%;
+  margin-top:1rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--orange);
+  color:#fff;
+  border:none;
+  padding:.6rem 1rem;
+  border-radius:14px;
+  font-size:.9rem;
+  font-weight:500;
+  cursor:pointer;
 }
 
 .mobile-links{
@@ -595,10 +682,119 @@ function FadeIn({ children, delay = 0 }) {
 /* ── COMPONENT ── */
 export default function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [formSent, setFormSent] = useState(false);
+  const [sending, setSending] = useState(false);
+
+async function handleContactSubmit(e) {
+  e.preventDefault();
+
+  setSending(true);
+
+  const formData = new FormData(e.target);
+
+  try {
+    const res = await fetch("https://formspree.io/f/mdabyoan", {
+      method: "POST",
+      body: formData,
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (res.ok) {
+      setFormSent(true);
+      e.target.reset();
+
+      setTimeout(() => {
+        setContactOpen(false);
+        setFormSent(false);
+      }, 2000);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  setSending(false);
+}
   return (
     <>
       <style>{css}</style>
       <div className="port-root">
+
+{contactOpen && (
+  <div
+    className="contact-modal-overlay"
+    onClick={() => setContactOpen(false)}
+  >
+    <div
+      className="contact-modal"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        className="contact-close"
+        onClick={() => setContactOpen(false)}
+      >
+        ✕
+      </button>
+
+      {!formSent ? (
+        <>
+          <h3 className="contact-title">
+            Let’s build something sharp
+          </h3>
+
+          <form
+            className="contact-form"
+            onSubmit={handleContactSubmit}
+          >
+            <input
+              type="text"
+              name="name"
+              placeholder="Your name"
+              required
+            />
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Your email"
+              required
+            />
+
+            <textarea
+              name="message"
+              rows="5"
+              placeholder="Tell me about your project"
+              required
+            />
+
+            <button
+              type="submit"
+              className="btn-primary"
+            >
+              {sending ? "Sending..." : "Send message →"}
+            </button>
+          </form>
+        </>
+      ) : (
+        <div className="contact-success">
+          <div className="contact-success-icon">
+            ✓
+          </div>
+
+          <h3 className="contact-title">
+            Message sent
+          </h3>
+
+          <p className="contact-sub">
+            Thanks for reaching out. I’ll get back to you shortly.
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+)}
 
         {/* NAV */}
        <nav className="nav">
@@ -610,7 +806,14 @@ export default function Portfolio() {
     ))}
   </ul>
 
-  <button className="nav-cta">Get in touch →</button>
+<button
+  className="nav-cta"
+  onClick={() => {
+    setFormSent(false);
+    setContactOpen(true);
+  }}>
+  Get in touch →
+</button>
 
   <button
     className="nav-menu"
@@ -621,18 +824,27 @@ export default function Portfolio() {
 
   {menuOpen && (
     <div className="mobile-menu">
-      <ul className="mobile-links">
-        {NAV_LINKS.map(l => (
-          <li key={l}>
-            <a href="#" onClick={() => setMenuOpen(false)}>{l}</a>
-          </li>
-        ))}
-      </ul>
+  <ul className="mobile-links">
+    {NAV_LINKS.map(l => (
+      <li key={l}>
+        <a href="#" onClick={() => setMenuOpen(false)}>
+          {l}
+        </a>
+      </li>
+    ))}
+  </ul>
 
-      <button className="nav-cta mobile-cta">
-        Get in touch →
-      </button>
-    </div>
+  <button
+    className="mobile-menu-cta"
+    onClick={() => {
+      setMenuOpen(false);
+      setFormSent(false);
+      setContactOpen(true);
+    }}
+  >
+    Get in touch →
+  </button>
+</div>
   )}
 </nav>
 
@@ -708,7 +920,15 @@ export default function Portfolio() {
               ideas to life with purpose and precision.
             </p>
             <div className="about-cta-row">
-              <button className="btn-primary">Get in touch →</button>
+              <button
+                className="btn-primary"
+                onClick={() => {
+                setFormSent(false);
+                setContactOpen(true);
+                }}
+               >
+                Get in touch →
+              </button>
             </div>
           </FadeIn>
         </section>
@@ -809,7 +1029,7 @@ export default function Portfolio() {
         {/* FOOTER */}
         <footer className="footer">
           <span className="footer-logo">MKAY ✦</span>
-          <span className="footer-note">© 2025 MKAY. All rights reserved.</span>
+          <span className="footer-note">© 2026 MKAY. All rights reserved.</span>
           <div className="footer-links">
             {SOCIALS.map(s => (
               <a href={s.url} className="footer-link" key={s.name}>{s.name}</a>
