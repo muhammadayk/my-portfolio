@@ -10,7 +10,7 @@ const SERVICES = [
   { num: "#04", label: "Creative Direction" },
 ];
 
-const CLIENTS = ["Supa Blox", "Hype Blox", "Frame Blox", "Ultra Blox"];
+const CLIENTS = ["El-Khaleel", "Aptos Room", "Aptos Hausa", "Mkay Labs"];
 
 const SHOWCASE = [
   { title: "Streetwear Drop",     category: "Brand Identity",  year: "2024", tags: ["Branding","Print"],    emoji: "🧥" },
@@ -32,25 +32,25 @@ const SHOWCASE_GRADS = [
 
 const TESTIMONIALS = [
   {
-    name:"Sarah Chen", role:"CEO, NovaTech", avatar:"SC", stars:5,
+    name:"khaleel YK", role:"CEO, El-Khaleel", avatar:"KY", stars:5,
     quote:"Working with this team completely transformed our product. The attention to detail was beyond anything we expected. Our user retention jumped 40% post-launch.",
   },
   {
-    name:"Marcus Reed", role:"Founder, SoundWave", avatar:"MR", stars:5,
+    name:"Ukashat Bala", role:"Founder, Aptos-Hausa", avatar:"UK", stars:5,
     quote:"From concept to delivery, the process was seamless. They understood our vision immediately and translated it into a design language that truly resonates with our audience.",
   },
   {
-    name:"Amara Osei", role:"Brand Director, Glow", avatar:"AO", stars:5,
+    name:"Muhammad YK", role:"Brand Director, Mkay-Labs", avatar:"MK", stars:5,
     quote:"The packaging redesign helped us land two major retail chains within three months. Bold, fresh, and exactly what we needed to stand out on the shelf.",
   },
 ];
 
 const SOCIALS = [
-  { name:"Twitter / X",  handle:"@mkay",         icon:"𝕏",  url:"#" },
-  { name:"Instagram",    handle:"@mkay.design",  icon:"◎",  url:"#" },
-  { name:"Dribbble",     handle:"mkay",          icon:"⊕",  url:"#" },
-  { name:"LinkedIn",     handle:"in/mkay",       icon:"in", url:"#" },
-  { name:"Behance",      handle:"mkay",          icon:"Bē", url:"#" },
+  { name:"Twitter / X",  handle:"@0x_mkay",         icon:"𝕏",  url:"https://x.com/0x_mkay" },
+  { name:"Instagram",    handle:"@mooh_kherleel",  icon:"◎",  url:"https://instagram.com/mooh_kherleel" },
+  { name:"Dribbble",     handle:"0xmkay",          icon:"⊕",  url:"https://dribbble.com/0xmkay" },
+  { name:"LinkedIn",     handle:"in/muhammadyusufkhalil",       icon:"in", url:"https://linkedin.com/in/muhammadyusufkhalil" },
+  { name:"Behance",      handle:"mkay",          icon:"Bē", url:"https://behance.net/muhammadyusuf218" },
 ];
 
 /* ── AVATAR — replace this path with your own image URL ── */
@@ -541,7 +541,7 @@ body{
   color:rgba(192,216,216,.7);
   line-height:1.78;flex:1;font-style:italic;
 }
-.testi-author{display:flex;align-items:center;gap:.8rem}
+.testi-author{display:flex;align-items:center;gap:.8rem; text-align: left;}
 .testi-avatar{
   width:38px;height:38px;border-radius:50%;
   background:var(--orange);
@@ -568,7 +568,7 @@ body{
   background:rgba(0,168,168,.04);
   transform:translateX(4px);
 }
-.social-left{display:flex;align-items:center;gap:.9rem}
+.social-left{display:flex;align-items:center;gap:.9rem; text-align: left;}
 .social-icon{
   width:42px;height:42px;border-radius:11px;
   background:rgba(0,168,168,.07);
@@ -1011,7 +1011,13 @@ async function handleContactSubmit(e) {
           <FadeIn delay={90}>
             <div className="socials-list">
               {SOCIALS.map((s, i) => (
-                <a className="social-row" href={s.url} key={i}>
+                <a
+                   className="social-row"
+                   href={s.url}
+                   key={i}
+                   target="_blank"
+                   rel="noopener noreferrer"
+                >
                   <div className="social-left">
                     <div className="social-icon">{s.icon}</div>
                     <div>
@@ -1032,7 +1038,13 @@ async function handleContactSubmit(e) {
           <span className="footer-note">© 2026 MKAY. All rights reserved.</span>
           <div className="footer-links">
             {SOCIALS.map(s => (
-              <a href={s.url} className="footer-link" key={s.name}>{s.name}</a>
+              <a
+              href={s.url}
+              className="footer-link"
+              key={s.name}
+              target="_blank"
+              rel="noopener noreferrer"
+              >{s.name}</a>
             ))}
           </div>
         </footer>
